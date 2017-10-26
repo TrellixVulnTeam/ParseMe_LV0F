@@ -7,47 +7,88 @@ import feedparser
 from html.parser import HTMLParser
 import requests
 
+
 globwords = ''
 globtag = ''
-globCollectTags = []
+globhead = ''
+globsection = ''
+one_section = 0
+glob_list_item = ''
 
 
 class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         global globtag
-        global globCollectTags
-        if (tag == 'p' or tag == 'li' or tag == 'h4' or tag == 'a' or
-                tag == 'h2' or tag == 'h1'):
-            globCollectTags.append(tag)
-            globtag = tag
-        else:
-            globtag = ''
+        global globsection
+        global globhead
+        global glob_list_item
+
+        # finds title tag to print title
+        if tag == 'title':
+            globtag = 'start title'
+
+        # all desired text in the first section tag
+        if tag == 'section' and globsection != 'start section':
+            globsection = 'start section'
+
+        # check for headers to print since these are not in the paragraph tags
+        if (globsection == 'start section' and
+                tag in ['h2', 'h3', 'h4'] and globhead == ''):
+            globhead = 'start head'
+
+        # check for list tags since they are outside paragraph tags
+        if tag == 'li' and one_section == 0:
+            glob_list_item = 'li'
+
+        # all the rest of the text can be found in the paragraph tags!
+        if tag == 'p' and (globtag == 'end p' or globtag == ''):
+            globtag = 'start ' + tag
+
+    def handle_endtag(self, tag):
+        global globtag
+        global globwords
+        global section
+        global one_section
+
+        # This checks if the first section tag is done
+        # stops gathering data if true
+        if tag == 'section':
+            globsection = 'end section'
+            one_section = 1
+
+        # Add new lines inbetween paragraphs
+        if tag == 'p' and globtag == 'start p':
+            globtag = 'end ' + tag
+            globwords += '\n\n'
 
     def handle_data(self, data):
-        global globwords
         global globtag
-        global globCollectTags
-        if globtag == 'p':
-            if globCollectTags[-2] == 'a':
-                globwords += data
-            elif globCollectTags[-2] == 'p':
-                globwords += '\n\n'
-            globwords += data
-        # TODO find alternative for considering standard medium data
-        elif (globtag == 'a' and 'About membership' not in data and
-              'Sign in' not in data and 'Get started' not in data):
-            if globCollectTags[-2] == 'p' or globCollectTags[-2] == 'a':
-                globwords += data
-            elif (globCollectTags[-2] == 'h4' or globCollectTags[-2] == 'h3' or
-                  globCollectTags[-2] == 'h2'):
-                globwords += '\n' + data
-        elif globtag == 'h4' or globtag == 'h2' or globtag == 'h1':
-            globwords += '\n\n' + data + '\n\n'
-        elif globtag == 'li':
-            if globCollectTags[-2] == 'p':
-                globwords += '\n'
-            globwords += '\n\n\t-' + data
+        global globwords
+        global globhead
+        global globsection
+        global one_section
+        global glob_list_item
 
+        # add the title data once here
+        if globtag == 'start title':
+            globwords += data + '\n\n'
+            globtag = ''
+
+        # add header data
+        if (globhead == 'start head' and globsection != 'end section' and
+                one_section == 0):
+            globwords += data + '\n\n'
+            globhead = ''
+
+        # add list item data
+        if glob_list_item == 'li' and one_section == 0:
+            globwords += '\t- ' + data + '\n\n'
+            glob_list_item = ''
+
+        # add all the rest of the text data in the first section
+        if (globtag == 'start p' and globsection == 'start section' and
+                one_section == 0):
+            globwords += data
 
 # Access user profile
 print('Please enter your username')
