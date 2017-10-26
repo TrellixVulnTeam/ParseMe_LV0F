@@ -57,6 +57,7 @@ userProfile = feedparser.parse('https://medium.com/feed/@{}'.format(username))
 # Blog to check
 print('Please enter a title of your post to check')
 blogTitle = str(input())
+blogTitle = ''.join(e for e in blogTitle if e.isalnum())
 
 # Will count the instances of the word in the blog later...
 print('Enter the word you want to check for. Please consider punctuation')
@@ -65,7 +66,8 @@ userWord = str(input())
 # this prints the titles
 blogEntry = None
 for blog in userProfile.entries:
-    if blog.title == blogTitle:
+    # remove special characters, NOTE possible issue
+    if ''.join(e for e in blog.title if e.isalnum()) == blogTitle:
         blogEntry = blog.link
 
 if not blogEntry:
@@ -74,10 +76,12 @@ if not blogEntry:
 if blogEntry:
     # Access blog here
     blogPage = requests.get(blogEntry)
+
     # Init parser
     parser = MyHTMLParser()
     # Remove unicode
     decodedPage = blogPage.content.decode()
+
     # Time to feed page content! This is where the parsing is initiated!
     parser.feed(str(decodedPage))
 
