@@ -1,0 +1,19 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title> brb hacking into mainframe </title>
+    {% endif %}
+  </head>
+  <body>
+    <h1>{{ project.name }}</h1>
+    <form action="{{ url_for('handle_data') }}" method="post">
+    <input type="text" name="projectFilepath">
+    <input type="submit">
+    </form>
+    {% for blog in blogs %}
+    <div><p>{{ blog.author.username }} says: <b>{{ blog.body }}</b></p></div>
+    {% endfor %}
+  </body>
+</html>
