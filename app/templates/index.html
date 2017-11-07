@@ -22,26 +22,26 @@
     <h1>{{ project.name }}</h1>
 
     <!-- ENTER USERNAME-->
-    <form class="form-inline" method="POST" action="/">
+    <form class="form-inline" method="post" action="">
       <div class="form-group">
 	<div class="row">
-    <label for="inputUsername" class="col">Enter Username</label>
-    <input type="text" name="username" class="form-control col" id="inputUsername" placeholder="@mediumUsername">
+	  <label for="inputUsername" class="col">Enter Username</label>
+	  <input type="text" name="username" class="form-control col" id="inputUsername" placeholder="@mediumUsername">
+	</div>
+	<button type="submit" name="action" value="test1" class="btn btn-primary col">Find Blogs</button>
       </div>
-      <button type="submit" name="my-form" class="btn btn-primary col">Find Blogs</button>
-      </div>
-    </form>
 
-    <!--SUBMIT BLOG & KEYWORD-->
-    <form action="/" method="post">
+
       <div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" name="titles" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<button class="btn btn-secondary dropdown-toggle" name="titles" type="submit" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	  Blog List
 	</button>
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 	  {% for title in blog_title %}
 	  <li>
-	    <input class="checkbox" type="checkbox" name="check">
+	    <input class="checkbox" type="checkbox" name="check" value="{{ blog_title }}">
+	    {% set testing = 'it worked' %}
+	    {{ testing }}
 	    {{ title }}
 	  </li>
 	  {% endfor %}
@@ -50,21 +50,15 @@
       <!-- END BLOG ROW-->
 
       <!--KEYWORD ROW-->
-	<input type="text" class="form-control" name="checker">
-	<button type="submit" class="btn btn-primary">Submit</button>
-      </div>
+      <input type="text" class="form-control" name="checker">
+      <button method="post" type="submit" class="btn btn-primary" name="action" value="zucc">Submit</button>
     </form>
+
+
+    <div class="container">
+      {{ blog_content }}
     </div>
 
-
-<div class="container">
-    {% for blog in blogs %}
-    <div><p>{{ blog.author.username }}'s Blog: <b>{{ blog.blogtitle }}</b></p></div>
-    {% endfor %}
-</div>
-<div>
-<p> {{ message }} </p>
-</div>
 <div>
 </div>
 
