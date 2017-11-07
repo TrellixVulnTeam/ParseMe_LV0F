@@ -2,11 +2,11 @@ import feedparser
 import logging
 from html.parser import HTMLParser
 import requests
-from flask import render_template, flash
+from flask import render_template, flash, request
 from app import app
 
-#@app.context_processor
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     project = {'name' : 'UNICORN AI BLOG CHECKER'}
@@ -22,11 +22,23 @@ def index():
             'body' : 'give me the Z U C C'
         }
     ]
-    userProfile = feedparser.parse('https://medium.com/feed/@joewmcdaniel')
+    blog_title = []
+    blog_content = []
 
-    dog = 'hi how are you'
+    if request.method == 'POST':
+        username = request.form['username']
+        user_titles = request.form.getlist("titles")
+        userProfile = feedparser.parse('https://medium.com/feed/@{}'.format(username))
+
+        for title in userProfile.entries:
+            blog_title.append(title.title)
+        if len(blog_title) == 0:
+                return ("No titles found")
+
+        for content in userProfile.entries:
+            blog_content.append(content.content)
+
     return render_template('index.html',
                            project=project,
-                           blogs=blogs,
-                           dog=dog,
-                           userProfile=userProfile)
+                           blog_title=blog_title,
+                           blog_content=blog_content)
