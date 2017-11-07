@@ -25,25 +25,24 @@
     <form class="form-inline" method="POST" action="/">
       <div class="form-group">
 	<div class="row">
-    <label for="inputPassword2" class="col">Enter Username</label>
-    <input type="text" name="url" class="form-control col" id="inputUsername" placeholder="@mediumUsername">
+    <label for="inputUsername" class="col">Enter Username</label>
+    <input type="text" name="username" class="form-control col" id="inputUsername" placeholder="@mediumUsername">
       </div>
-      <button type="submit" class="btn btn-primary col">Find Blogs</button>
+      <button type="submit" name="my-form" class="btn btn-primary col">Find Blogs</button>
       </div>
     </form>
 
     <!--SUBMIT BLOG & KEYWORD-->
     <form action="/" method="post">
-      <!-- BLOG ROW-->
       <div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<button class="btn btn-secondary dropdown-toggle" name="titles" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	  Blog List
 	</button>
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-	  {% for blog in blogs %}
+	  {% for title in blog_title %}
 	  <li>
-	    <input class="checkbox" type="checkbox">
-	    {{ blog.author.username }}
+	    <input class="checkbox" type="checkbox" name="check">
+	    {{ title }}
 	  </li>
 	  {% endfor %}
 	</ul>
@@ -52,8 +51,6 @@
 
       <!--KEYWORD ROW-->
 	<input type="text" class="form-control" name="checker">
-	<!-- END KEYWORD ROW-->
-	<!--SUBMIT-->
 	<button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
@@ -69,7 +66,6 @@
 <p> {{ message }} </p>
 </div>
 <div>
-<p>yay: {{ userProfile }}</p>
 </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
