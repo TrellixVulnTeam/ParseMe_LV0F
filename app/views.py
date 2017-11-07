@@ -37,7 +37,6 @@ def index():
 
 
     elif request.method == 'POST':
-        print('\n\n yeah bitch \n\n')
         if request.form["action"] == 'test1':
             username = request.form['username']
             user_titles = request.form.getlist("titles")
@@ -63,7 +62,6 @@ def index():
             for content in request.form['check']:
                 #print(request.form['check'])
                 #print(request.form['check'])
-                print('\n\n hello bitch \n\n')
                 print("This is content: ", content)
                 blog_content.append(content)
             for k, v in request.form.items():
