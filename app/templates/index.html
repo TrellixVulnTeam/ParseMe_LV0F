@@ -37,7 +37,7 @@
 	  Blog List
 	</button>
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-	  {% for title in blog_title %}
+	  {% for title in blog_titles %}
 	  <li>
 	    <input class="checkbox" type="checkbox" name="check" value="{{ title }}">
 	    {{ title }}
@@ -64,8 +64,8 @@
 
 
     <div class="container">
-      {% for i in output %}
-      <br>{{ i }}</br>
+      {% for each_search in search_collection %}
+      <br>{{ each_search }}</br>
       {% endfor %}
     </div>
 

@@ -16,7 +16,7 @@ def index():
     global user
 
     project = {'name' : 'UNICORN AI BLOG CHECKER'}
-    blog_title = []
+    blog_titles = []
 
     if request.method == 'GET':
         return render_template('index.html',
@@ -40,9 +40,9 @@ def index():
             userProfile = feedparser.parse('https://medium.com/feed/@{}'.format(username))
 
             for title in userProfile.entries:
-                blog_title.append(title.title)
+                blog_titles.append(title.title)
 
-            if len(blog_title) == 0:
+            if len(blog_titles) == 0:
                 return ("No titles found"), 404
 
             print("titles", user_titles)
@@ -52,7 +52,7 @@ def index():
 
             return render_template('index.html',
                                    project=project,
-                                   blog_title=blog_title)
+                                   blog_titles=blog_titles)
 
 
 
@@ -91,18 +91,18 @@ def index():
             print("This is words: ", words)
             print("Right before word search")
             word_search = generate_content(chosen, words)
-            output = ''
+            search_collection = ''
             if word_search:
                 for k, v in word_search.items():
-                    output += 'The phrase "{}" appears "{}" time(s) in the blog(s) selected.ð'.format(k, v)
-            output = output.split('ð')
-            print("This is output: ",output)
-            #print("This is the output: ", output)
+                    search_collection += 'The phrase "{}" appears "{}" time(s) in the blog(s) selected.ð'.format(k, v)
+            search_collection = search_collection.split('ð')
+            #print("This is search_collection: ",search_collection)
+            #print("This is the search_collection: ", search_collection)
             user = ''
             return render_template('index.html',
                                    project=project,
-                                   blog_title=blog_title,
-                                   output=output)
+                                   blog_titles=blog_titles,
+                                   search_collection=search_collection)
 
 if __name__ == '__main__':
     app.run(debug=True)
