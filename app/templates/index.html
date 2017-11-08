@@ -22,26 +22,24 @@
     <h1>{{ project.name }}</h1>
 
     <!-- ENTER USERNAME-->
-    <form class="form-inline" method="POST" action="/">
+    <form class="form-inline" method="post" action="">
       <div class="form-group">
 	<div class="row">
-    <label for="inputUsername" class="col">Enter Username</label>
-    <input type="text" name="username" class="form-control col" id="inputUsername" placeholder="@mediumUsername">
+	  <label for="inputUsername" class="col">Enter Username</label>
+	  <input type="text" name="username" class="form-control col" id="inputUsername" placeholder="@mediumUsername">
+	</div>
+	<button method="post" type="submit" name="first" value="test1" class="btn btn-primary col">Find Blogs</button>
       </div>
-      <button type="submit" name="my-form" class="btn btn-primary col">Find Blogs</button>
-      </div>
-    </form>
 
-    <!--SUBMIT BLOG & KEYWORD-->
-    <form action="/" method="post">
+
       <div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" name="titles" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<button class="btn btn-secondary dropdown-toggle" name="titles" type="submit" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	  Blog List
 	</button>
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 	  {% for title in blog_title %}
 	  <li>
-	    <input class="checkbox" type="checkbox" name="check">
+	    <input class="checkbox" type="checkbox" name="check" value="{{ title }}">
 	    {{ title }}
 	  </li>
 	  {% endfor %}
@@ -50,26 +48,29 @@
       <!-- END BLOG ROW-->
 
       <!--KEYWORD ROW-->
-	<input type="text" class="form-control" name="checker">
-	<button type="submit" class="btn btn-primary">Submit</button>
+      <!--
+      <button method="post" type="submit" class="btn btn-primary" name="next" value="zucc">Submit</button>
+      <input type="text" class="form-control" name="checker">
+      <!-- <input type="text" name="words" class="form-control col" id="inputWords" placeholder="enter word(s)" action='> -->
+      <div class="form-group">
+	<div class="row">
+	  <label for="inputWords" class="col">Enter Words</label>
+	  <input type="text" name="words" class="form-control col" id="inputWords" placeholder="enter words">
+	</div>
+	<button type="submit" name="second" value="test2" class="btn btn-primary col" method="post">Find Words</button>
       </div>
+
     </form>
+
+
+    <div class="container">
+      {% for i in output %}
+      <br>{{ i }}</br>
+      {% endfor %}
     </div>
 
-
-<div class="container">
-    {% for blog in blogs %}
-    <div><p>{{ blog.author.username }}'s Blog: <b>{{ blog.blogtitle }}</b></p></div>
-    {% endfor %}
-</div>
-<div>
-<p> {{ message }} </p>
-</div>
-<div>
-</div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
   </body>
 </html>

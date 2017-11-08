@@ -19,7 +19,6 @@ class MyHTMLParser(HTMLParser):
         """
         Locates all start tags
         """
-
         # finds title tag to print title
         if tag == 'title':
             self.target_tag = 'start title'
@@ -45,21 +44,17 @@ class MyHTMLParser(HTMLParser):
         """
         Locates all end tags
         """
-
         # Checks if the first section tag is done NOTE BUG for other sections
         # stops gathering data if true
         if tag == 'section' and self.one_section != 1:
             self.target_section = 'end section'
             self.one_section = 1
-            #return (self.get_content())
             self.get_content()
-            #print("we are finished!")
-            
+
         # Add new lines inbetween paragraphs
         if tag == 'p' and self.target_tag == 'start p':
             self.target_tag = 'end ' + tag
             self.content += '\n\n'
-
 
     def handle_data(self, data):
         """
@@ -85,14 +80,12 @@ class MyHTMLParser(HTMLParser):
         if (self.target_tag == 'start p' and self.target_section == 'start section' and
                 self.one_section == 0):
             self.content += data
-        #print("This is the content so far: {}\n\n\n\n\n\n\n\n\n\n".format(self.content))
+
     def get_content(self):
         global returned_content
-        #print("\n\n\n\n\n HERE'S THE CONTENT! \n\n\n\n")
-        #print("\n\n\n\n\n\nThis is to be returned: \n\n\n\n\n\n\n\n\n",self.content)
         returned_content += self.content
         self.content = ''
-        return self.content
+        #return self.content
 
 
 def access_profile(username):
@@ -114,16 +107,13 @@ def generate_titles(user_profile_feed):
     if user_profile_feed:
         titles = {}
         for entry in user_profile_feed.entries:
-            #print('\n\n yay \n\n')
             titles[entry.title] = entry.link
-
         return titles
 
 def choose_title(chosen_titles, titles):
     """
     generate dictionary of chosen titles
     """
-    print("entered!")
     chosen = {}
     for title in chosen_titles:
         if title in titles:
@@ -135,45 +125,48 @@ def generate_content(titles, words):
     generates content from selected titles
     """
     global returned_content
+    content = []
     if titles:
         # Init parser
-        print("The titles ", titles)
-        parser = MyHTMLParser()
+        #parser = MyHTMLParser()
         for title, link in titles.items():
             # Access blog here
             blogPage = requests.get(link)
-
+            
             # Remove unicode
             decodedPage = blogPage.content.decode()
-            #print("\n\n\n DECODE \n\n\n")
             # Time to feed page content! This is where parsing is initiated!
-
-            print("right before parser starts")
             
             #parser.feed(str(decodedPage))
 
             MyHTMLParser().feed(str(decodedPage))
             
-            #print(returned_content)
-            #print("\n\n\n\n\n\n\n\n\ parser finished, next blog if available \n\n\n\n\n\n\n")
-            #print("This is content now: ", returned_content)#, content)
             #if content:
             #    count_words(content, words)
-            count_words(returned_content, words)
+            #finds = count_words(returned_content, words)
+            content.append(returned_content)
             returned_content = ''
-            
+
+        print("This is the list content from several blogs: ", content)
+        content = ' '.join(content)
+        finds = count_words(content, words)
+        return_content = ''
+        return finds
 
 def count_words(content, words):
     """
     count the number of occurances a word, words, or phrase happens in a blog
     """
+    finds = {}
     if content:
-        print("WE ARE IN WORD COUNT!")
         for phrase in words:
+            finds[phrase] = content.lower().count(phrase.lower())
             print('This is the amount of times {} comes up: {}'.format(
                 phrase, content.lower().count(phrase.lower())))
-            #print("This is content: ", content)
+        return finds
 
+"""
+Testing in console
 
 print("here we go!")
 
@@ -192,3 +185,4 @@ print("start generating content")
 something = generate_content(chosen, ['web server', 'linux'])
 
 print('content completed')
+"""
