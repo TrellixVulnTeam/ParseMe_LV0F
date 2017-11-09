@@ -3,8 +3,7 @@ import feedparser
 from html.parser import HTMLParser
 import requests
 from flask import Flask, render_template, flash, request
-#from app import app
-from mediumParserV2Test import  *
+from mediumParserV2 import  *
 
 app = Flask(__name__)
 
@@ -18,36 +17,34 @@ def index():
     project = {'name' : 'UNICORN AI BLOG CHECKER'}
     blog_titles = []
 
+    # When the page is first visited
     if request.method == 'GET':
         return render_template('index.html',
                                project=project)
 
-    
+    # One of the find buttons has been used
     elif request.method == 'POST':
 
-        print("The immutable multi dict request form ", request.form, "\n")
-
+        # Convert Immutable multi dict from request.form to a dictionary so that key and values to be accessed
         converted = dict(request.form)
-        print("This is converted to dict: ", converted, "\n")
 
+        # First find button clicked
+        if 'first' in converted.keys():
 
-        if 'first' in converted.keys(): # and len(request.form['checker']) == 0:
-            print('\n\n test1 entered \n\n')
-
-            
+            # Retrieves username value from form
             username = request.form['username']
-            user_titles = request.form.getlist("titles")
-            userProfile = feedparser.parse('https://medium.com/feed/@{}'.format(username))
 
-            for title in userProfile.entries:
-                blog_titles.append(title.title)
+            # RSS feed of user profile
+            feed = access_profile(username)
+
+            # Dictionary of blog titles with profile
+            blog_titles = generate_titles(feed).keys()
 
             if len(blog_titles) == 0:
-                return ("No titles found"), 404
+                blog_titles = ["No titles found!"]
 
-            print("titles", user_titles)
-            print('\n\n\n YAY \n\n\n')
-
+            # This is how the username is retained for the next submit button!
+            # A global variable is used...in the future this may not be needed with ajax implemented
             user += request.form['username']
 
             return render_template('index.html',
