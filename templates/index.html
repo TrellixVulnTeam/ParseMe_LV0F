@@ -13,7 +13,7 @@
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
-    <title> brb hacking into mainframe </title>
+    <title> blog checker </title>
     {% endif %}
   </head>
   <body>
@@ -22,52 +22,46 @@
     <h1>{{ project.name }}</h1>
 
     <!-- ENTER USERNAME-->
-    <form class="form-inline" method="post" action="">
-      <div class="form-group">
-	<div class="row">
-	  <label for="inputUsername" class="col">Enter Username</label>
-	  <input type="text" name="username" class="form-control col" id="inputUsername" placeholder="@mediumUsername">
-	</div>
-	<button method="post" type="submit" name="first" value="test1" class="btn btn-primary col">Find Blogs</button>
+    <form class="border-success" method="POST" action="">
+      <div class="form-group row">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon border-dark">@</span>
+	         <input type="text" name="username" class="form-control col border-dark" id="inputUsername" placeholder="Enter Medium Username">
+           <button method="post" type="submit" name="first" value="test1" class="btn btn-primary btn-lg">Find Blogs</button>
+         </div>
+       </div>
+
+
+
+    <div class="form-group row">
+      <div class="input-group input-group-lg">
+        <div class="input-group-btn">
+          <button style="width: 125px;" class="btn btn-secondary btn-lg btn-block dropdown-toggle border-dark" name="titles" type="submit" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	         Blog List
+          </button>
+          <ul class="dropdown-menu border-dark" aria-labelledby="dropdownMenuButton">
+          {% for title in blog_titles %}
+          <li>
+            <input class="checkbox border-dark" type="checkbox" name="check" value="{{ title }}">
+            {{ title }}
+          </li>
+          {% endfor %}
+          </ul>
+        </div>
+          <input type="text" name="words" class="form-control border-dark" id="inputWords" placeholder="Enter Keyword(s)">
+          <button type="submit" style="width: 125px;" name="second" value="test2" class="btn btn-primary btn-lg" method="POST">Find Words</button>
       </div>
-
-
-      <div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" name="titles" type="submit" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  Blog List
-	</button>
-	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-	  {% for title in blog_titles %}
-	  <li>
-	    <input class="checkbox" type="checkbox" name="check" value="{{ title }}">
-	    {{ title }}
-	  </li>
-	  {% endfor %}
-	</ul>
-      </div>
-      <!-- END BLOG ROW-->
-
-      <!--KEYWORD ROW-->
-      <!--
-      <button method="post" type="submit" class="btn btn-primary" name="next" value="zucc">Submit</button>
-      <input type="text" class="form-control" name="checker">
-      <!-- <input type="text" name="words" class="form-control col" id="inputWords" placeholder="enter word(s)" action='> -->
-      <div class="form-group">
-	<div class="row">
-	  <label for="inputWords" class="col">Enter Words</label>
-	  <input type="text" name="words" class="form-control col" id="inputWords" placeholder="enter words">
-	</div>
-	<button type="submit" name="second" value="test2" class="btn btn-primary col" method="post">Find Words</button>
-      </div>
-
+    </div>
     </form>
 
 
-    <div class="container">
-      {% for each_search in search_collection %}
-      <br>{{ each_search }}</br>
-      {% endfor %}
+    {% if word_search %}
+    {% for k,v in word_search.items() %}
+    <p>The keyword or phrase <strong style="font-size: 20px;">"{{ k }}"</strong> appears <strong style="font-size: 20px;"> {{ v }}</strong> times in the blog(s) selected</p>
+    {% endfor %}
+    {% endif %}
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
