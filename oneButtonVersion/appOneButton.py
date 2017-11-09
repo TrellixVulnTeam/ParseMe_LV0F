@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 import feedparser
-from html.parser import HTMLParser
 import requests
 from flask import Flask, render_template, flash, request
-#from app import app
-from mediumParserV2Test import  *
+from mediumParserV2Test import *
 
 app = Flask(__name__)
 
@@ -12,51 +10,50 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    project = {'name' : 'UNICORN AI BLOG CHECKER'}
-    blogs = [ #MACHINE LEARNING AT WORK!!
-        {
-            'author' : {'username' : 'THE ZUCC'},
-            'blogtitle' : 'LIVE FROM MENLO PARK',
-            'body' : 'Hello, fellow Human Beings. Have you tried VR?'
-        },
-        {
-            'author' : {'username' : 'Joe'},
-            'blogtitle' : 'HIRE ME',
-            'body' : 'give me the Z U C C'
-        }
-    ]
+    """
+    Main Page
+    """
 
+    project = {'name': 'UNICORN AI BLOG CHECKER'}
+
+    # When the page is first visited
     if request.method == 'GET':
-        return render_template('indexUpdate.html',
+        return render_template('indexOneButton.html',
                                project=project)
-    
+
+    # Submit button entered
     elif request.method == 'POST':
 
         username = request.form['username_input']
         selected_title = request.form['title_input']
         words = request.form['keyword_input']
+        words = words.split(', ')
 
+        # Access feed
         feed = access_profile(username)
+
+        # Generate a dict of all user titles with links to be referenced
         titles = generate_titles(feed)
-        
-        
+
+        # Generate a dict of chosen titles and
+        # links based on what titles are selected
         chosen_title = choose_title([selected_title], titles)
 
-        #print("This is chosen! --> ", chosen)
-        words = words.split(', ')
+        # Generate a dict of words and the times they appear in the blog(s)
         word_search = generate_content(chosen_title, words)
-        
+
+        # The number of occurences word appears
+        # in the blog(s) on the front end
         output = ''
+        if word_search:
+            for k, v in word_search.items():
+                output += "The phrase {} appears {} \
+                time(s) in the blog(s) selected.\n".format(k, v)
 
-        for k, v in word_search.items():
-            output += "The phrase {} appears {} time(s) in the blog(s) selected.\n".format(
-                k, v)
-
-        #print("This is word_search: ", word_search)
-
-        return render_template('indexUpdate.html',
+        return render_template('indexOneButton.html',
                                project=project,
                                output=output)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
