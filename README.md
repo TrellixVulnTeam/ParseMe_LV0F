@@ -48,9 +48,10 @@ $ source virtualParse/bin/active
 ## Usage
 
 <p align="center">
-   <img src="static/images/step1.gif" alt="ParseMe Use GIF">
-   <img src="static/images/step2.gif" alt="ParseMe Use GIF">
-   <img src="static/images/step3.gif" alt="ParseMe Use GIF">
+   <img src="static/images/step_1.gif" alt="ParseMe Use GIF">
+   <img src="static/images/step_2.gif" alt="ParseMe Use GIF">
+   <img src="static/images/step_3.gif" alt="ParseMe Use GIF">
+   <img src="static/images/step_4.gif" alt="ParseMe Use GIF">	
 </p>
 
 ## TODOs
