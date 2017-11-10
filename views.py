@@ -15,26 +15,20 @@ user = ''
 def index():
     global user
 
-    project = {'name' : 'UNICORN AI BLOG CHECKER'}
+    project = {'name' : 'ParseMe'}
     blog_titles = []
 
     if request.method == 'GET':
         return render_template('index.html',
                                project=project)
 
-    
+
     elif request.method == 'POST':
-
-        print("The immutable multi dict request form ", request.form, "\n")
-
+        print("grabbing titles...")
         converted = dict(request.form)
-        print("This is converted to dict: ", converted, "\n")
-
 
         if 'first' in converted.keys(): # and len(request.form['checker']) == 0:
-            print('\n\n test1 entered \n\n')
 
-            
             username = request.form['username']
             user_titles = request.form.getlist("titles")
             userProfile = feedparser.parse('https://medium.com/feed/@{}'.format(username))
@@ -45,11 +39,8 @@ def index():
             if len(blog_titles) == 0:
                 return ("No titles found"), 404
 
-            print("titles", user_titles)
-            print('\n\n\n YAY \n\n\n')
-
             user += request.form['username']
-
+            print("titles found!")
             return render_template('index.html',
                                    project=project,
                                    blog_titles=blog_titles)
@@ -57,52 +48,30 @@ def index():
 
 
         elif 'second' in converted.keys():
-            print('\n\n test2 entered \n\n')
-
+            print("start word search")
             words = converted['words']
             words = ''.join(words)
-            print("words after the join: ", words)
             if len(words) > 1:
-                
-                
+
+
                 words = words.split(', ')
-            #infoDict = dict(request.form)
-            #print("This is blog content: ", blog_content)
-            print("This is the mother fucking dict: ", converted)
             selectedTitles = ''
-            print("before loop")
             for k, v in converted.items():
                 if k == 'check':
                     selectedTitles = v
-                    #print("here are the selected titles: ", v)
+
             # begin parsing
-            print("before feed")
             feed = access_profile(user)
             titles = generate_titles(feed)
-            #print(titles)
-            #print("This is selected ", selectedTitles)
             chosen = choose_title(selectedTitles, titles)
-            #print("This is chosen ", chosen)
 
-            
-            #print('Yay: ', request.form['checker'])
-            word_search = None
-            #words = words.split(', ')
-            print("This is words: ", words)
-            print("Right before word search")
             word_search = generate_content(chosen, words)
-            search_collection = ''
-            if word_search:
-                for k, v in word_search.items():
-                    search_collection += 'The phrase "{}" appears "{}" time(s) in the blog(s) selected.ð'.format(k, v)
-            search_collection = search_collection.split('ð')
-            #print("This is search_collection: ",search_collection)
-            #print("This is the search_collection: ", search_collection)
             user = ''
+            print("words found! ")
             return render_template('index.html',
                                    project=project,
                                    blog_titles=blog_titles,
-                                   search_collection=search_collection)
+                                   word_search=word_search)
 
 if __name__ == '__main__':
     app.run(debug=True)
