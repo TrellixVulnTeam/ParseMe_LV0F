@@ -18,7 +18,7 @@ def index():
 
     global user
 
-    project = {'name': 'UNICORN AI BLOG CHECKER'}
+    project = {'name': 'ParseMe'}
     blog_titles = []
 
     # When the page is first visited
