@@ -7,13 +7,13 @@
 
     <!--CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="static/styles/index.css">
 
 
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
-    <title> blog checker </title>
+    <title> ParseMe </title>
     {% endif %}
   </head>
   <body>
@@ -27,7 +27,7 @@
         <div class="input-group input-group-lg">
           <span class="input-group-addon border-dark">@</span>
 	         <input type="text" name="username" class="form-control col border-dark" id="inputUsername" placeholder="Enter Medium Username">
-           <button method="post" type="submit" name="first" value="test1" class="btn btn-primary btn-lg">Find Blogs</button>
+           <button method="post" type="submit" name="first" value="test1" class="btn btn-primary btn-lg">Find Posts</button>
          </div>
        </div>
 
@@ -37,7 +37,7 @@
       <div class="input-group input-group-lg">
         <div class="input-group-btn">
           <button style="width: 125px;" class="btn btn-secondary btn-lg btn-block dropdown-toggle border-dark" name="titles" type="submit" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	         Blog List
+	        Posts
           </button>
           <ul class="dropdown-menu border-dark" aria-labelledby="dropdownMenuButton">
           {% for title in blog_titles %}
@@ -49,7 +49,7 @@
           </ul>
         </div>
           <input type="text" name="words" class="form-control border-dark" id="inputWords" placeholder="Enter Keyword(s)">
-          <button type="submit" style="width: 125px;" name="second" value="test2" class="btn btn-primary btn-lg" method="POST">Find Words</button>
+          <button type="submit" style="width: 125px;" name="second" value="test2" class="btn btn-primary btn-lg" method="POST">Search</button>
       </div>
     </div>
     </form>
@@ -57,12 +57,18 @@
 
     {% if word_search %}
     {% for k,v in word_search.items() %}
-    <p>The keyword or phrase <strong style="font-size: 20px;">"{{ k }}"</strong> appears <strong style="font-size: 20px;"> {{ v }}</strong> times in the blog(s) selected</p>
+      {% if v == 0 %}
+          <p><i class="fa fa-exclamation-triangle" style="color: #F80002; font-size: 20px;" aria-hidden="true"></i>
+             No results for <strong style="font-size: 20px;">"{{ k }}"</strong></p>
+      {% else %}
+          <p><i class="fa fa-check" style="color: #26a655; font-size: 20px;" aria-hidden="true"></i>
+            The keyword or phrase <strong style="font-size: 20px;">"{{ k }}"</strong> appears <strong style="font-size: 20px;"> {{ v }}</strong> times in the post(s) selected</p>
+      {% endif %}
     {% endfor %}
     {% endif %}
     </div>
 
-
+    <script src="https://use.fontawesome.com/94ba8b3e38.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
