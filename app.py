@@ -94,22 +94,13 @@ def index():
 
             # --- End mediumParser usage ---
 
-            # The number of occurences word appears
-            # in the blog(s) on the front end
-            search_collection = ''
-            if word_search:
-                for k, v in word_search.items():
-                    search_collection += 'The phrase "{}" appears \
-                    "{}" time(s) in the blog(s) selected.ð'.format(k, v)
-            search_collection = search_collection.split('ð')
-
             # Refresh global user reference to username
             user = ''
 
             return render_template('index.html',
                                    project=project,
                                    blog_titles=blog_titles,
-                                   search_collection=search_collection)
+                                   word_search=word_search)
 
 
 if __name__ == '__main__':
