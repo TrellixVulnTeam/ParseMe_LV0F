@@ -33,7 +33,7 @@ $ virtualenv virtualParse --python=python3
 $ source virtualParse/bin/active
 ````
 
-#### Modules To Install Python Virtual Environment (now virtualParse)
+#### Modules To Install In Python Virtual Environment (virtualParse)
 
 ````
 (virutalParse) $ pip install -r requirements.txt
@@ -48,9 +48,9 @@ $ source virtualParse/bin/active
 ## Usage
 
 <p align="center">
-   <img src="static/images/step1.gif alt="ParseMe Use GIF">
-   <img src="static/images/step2.gif alt="ParseMe Use GIF">
-   <img src="static/images/step3.gif alt="ParseMe Use GIF">
+   <img src="static/images/step1.gif" alt="ParseMe Use GIF">
+   <img src="static/images/step2.gif" alt="ParseMe Use GIF">
+   <img src="static/images/step3.gif" alt="ParseMe Use GIF">
 </p>
 
 ## TODOs
